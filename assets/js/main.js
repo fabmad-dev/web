@@ -120,8 +120,12 @@
   /* Hero recedes while the next sheet slides over it */
   if (!reduce) {
     gsap.to(".hero__inner", {
-      scale: 0.94, yPercent: -6, opacity: 0.35, ease: "none",
+      scale: 0.9, yPercent: -10, ease: "none",
       scrollTrigger: { trigger: ".about", start: "top bottom", end: "top top", scrub: true },
+    });
+    gsap.to(".hero__inner", {
+      opacity: 0, ease: "none",
+      scrollTrigger: { trigger: ".about", start: "top bottom", end: "top 300px", scrub: true },
     });
   }
 
@@ -134,7 +138,6 @@
       })
     );
     gsap.from(".row", { yPercent: 40, opacity: 0, clearProps: "opacity,transform", duration: 1, ease: "expo.out", stagger: 0.1, scrollTrigger: { trigger: ".rows", start: "top 80%" } });
-    gsap.from(".stack__col", { yPercent: 30, opacity: 0, clearProps: "opacity,transform", duration: 1, ease: "expo.out", stagger: 0.1, scrollTrigger: { trigger: ".stack", start: "top 85%" } });
     gsap.from(".client", { yPercent: 40, opacity: 0, clearProps: "opacity,transform", duration: 1, ease: "expo.out", stagger: 0.07, scrollTrigger: { trigger: ".client-list", start: "top 80%" } });
   }
 
@@ -175,10 +178,19 @@
     paint(0);
   }
 
-  /* Skills: AI list rises in */
-  if (!reduce) {
-    gsap.from(".ai__list li", { yPercent: 50, opacity: 0, duration: 1, ease: "expo.out", stagger: 0.08, clearProps: "opacity,transform", scrollTrigger: { trigger: ".ai__list", start: "top 85%" } });
-  }
+  /* Skills: hovering a field keeps its tool cards intact and greys out the rest */
+  const marquees = $(".marquees");
+  const focusCat = (c) => {
+    if (c) marquees.dataset.focus = c; else delete marquees.dataset.focus;
+    $$(".field").forEach((f) => f.setAttribute("aria-pressed", String(f.dataset.cat === c)));
+  };
+  $$(".field").forEach((f) => {
+    f.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") focusCat(f.dataset.cat); });
+    f.addEventListener("pointerleave", (e) => { if (e.pointerType === "mouse") focusCat(null); });
+    f.addEventListener("focus", () => focusCat(f.dataset.cat));
+    f.addEventListener("blur", () => focusCat(null));
+    f.addEventListener("click", () => focusCat(marquees.dataset.focus === f.dataset.cat && f.matches(":not(:hover)") ? null : f.dataset.cat));
+  });
 
   /* Tool marquees: scroll drives them. Down moves row one left and row two right, up reverses. */
   const rows = $$(".marquee").map((m) => {
@@ -214,6 +226,7 @@
     list.addEventListener("pointermove", (e) => { xTo(e.clientX + 40); yTo(e.clientY); });
     $$(".client").forEach((c) => {
       c.addEventListener("pointerenter", () => {
+        if (!c.dataset.img) { gsap.to(float, { opacity: 0, duration: 0.2, overwrite: "auto" }); return; }
         fimg.src = c.dataset.img;
         gsap.to(float, { opacity: 1, scale: 1, rotate: 0, duration: 0.5, ease: "expo.out", overwrite: "auto" });
       });
