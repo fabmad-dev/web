@@ -2,6 +2,10 @@
   const root = document.documentElement;
   const reduce = root.dataset.motion === "off";
   const store = (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} };
+  const es = root.lang.startsWith("es");
+  const T = es
+    ? { light: "Claro", dark: "Oscuro", toDark: "Cambiar a modo oscuro", toLight: "Cambiar a modo claro", on: "Animaciones: sí", off: "Animaciones: no" }
+    : { light: "Light", dark: "Dark", toDark: "Switch to dark mode", toLight: "Switch to light mode", on: "Animations: on", off: "Animations: off" };
   const fine = matchMedia("(hover: hover) and (pointer: fine)").matches;
   const $ = (s, c = document) => c.querySelector(s);
   const $$ = (s, c = document) => [...c.querySelectorAll(s)];
@@ -27,8 +31,8 @@
   const themeBtn = $("#theme"), themeLabel = $("#theme-label"), meta = $('meta[name="theme-color"]');
   const syncTheme = () => {
     const light = root.dataset.theme === "light";
-    themeLabel.textContent = light ? "Dark" : "Light";
-    themeBtn.setAttribute("aria-label", light ? "Switch to dark mode" : "Switch to light mode");
+    themeLabel.textContent = light ? T.dark : T.light;
+    themeBtn.setAttribute("aria-label", light ? T.toDark : T.toLight);
     meta.content = light ? "#e4f5e8" : "#163832";
   };
   syncTheme();
@@ -38,7 +42,7 @@
     syncTheme();
   });
   const motionBtn = $("#motion");
-  motionBtn.textContent = reduce ? "Animations: off" : "Animations: on";
+  motionBtn.textContent = reduce ? T.off : T.on;
   motionBtn.setAttribute("aria-pressed", String(reduce));
   motionBtn.addEventListener("click", () => { store("motion", reduce ? "on" : "off"); location.reload(); });
 
@@ -150,15 +154,19 @@
 
   /* About: one pinned scene, DESIGNER scrambles into DEVELOPER as you scroll */
   const about = $("#about");
-  const slots = $$(".about__word .s");
-  const FROM = ["D", "E", "S", "I", "G", "N", "E", "R", ""], TO = [..."DEVELOPER"], GLYPHS = "<>/{}[]=+*#%&01";
+  const aboutWord = $(".about__word", about);
+  const WORDS = [aboutWord.dataset.from, aboutWord.dataset.to];
+  const N = Math.max(WORDS[0].length, WORDS[1].length);
+  const FROM = [...WORDS[0].padEnd(N)].map((c) => c.trim()), TO = [...WORDS[1].padEnd(N)].map((c) => c.trim()), GLYPHS = "<>/{}[]=+*#%&01";
+  aboutWord.innerHTML = FROM.map((c) => `<span class="s" aria-hidden="true">${c}</span>`).join("");
+  const slots = $$(".s", aboutWord), STEP = 0.176 / (N - 1);
   const phases = $$(".phase", about), steps = $$(".about__steps i", about);
   const yearsBox = $(".about__years", about), yearsNum = $("b", yearsBox), word = $(".about__word", about);
   const clamp = (v) => Math.min(1, Math.max(0, v));
   const win = (p, a, b) => clamp((p - a) / (b - a));
   const paint = (p) => {
     slots.forEach((s, i) => {
-      const lp = win(p, 0.3 + i * 0.022, 0.42 + i * 0.022);
+      const lp = win(p, 0.3 + i * STEP, 0.42 + i * STEP);
       const next = lp <= 0 ? FROM[i] : lp >= 1 ? TO[i] : GLYPHS[(i * 5 + Math.floor(lp * 24)) % GLYPHS.length];
       if (s.textContent !== next) s.textContent = next;
     });
