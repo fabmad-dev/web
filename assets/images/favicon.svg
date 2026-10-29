@@ -1,33 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 27.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Capa_2_00000142860512131483759180000003518439572103195035_"
-	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 100 91.3"
-	 style="enable-background:new 0 0 100 91.3;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill:#FFFFFF;}
-	.st1{fill:#00662F;}
-	.st2{fill:#009030;}
-	.st3{fill:#005D29;}
-	.st4{fill:#4DA92C;}
-	.st5{fill:#004E24;}
-	.st6{fill:#712371;}
-	.st7{fill:#935FA7;}
-	.st8{fill:#9B489B;}
-	.st9{fill:#571359;}
-</style>
-<polygon class="st0" points="79.2,0 20,0 0,45.3 21,91.3 79.4,91.3 100,45.5 "/>
-<polygon class="st1" points="54.9,27.1 35.1,27.1 25.3,5.1 45,5.1 "/>
-<polygon class="st2" points="26.9,45.6 7.1,45.6 25.3,5.1 45,5.1 "/>
-<polygon class="st3" points="37.8,70.2 18.1,70.2 35.1,32.2 54.9,32.2 "/>
-<polygon class="st4" points="45,86.1 25.3,86.1 7.1,45.6 26.9,45.6 "/>
-<polygon class="st5" points="35.1,32.2 37.8,32.2 31.4,47.2 37.8,70.2 28,48.2 "/>
-<polygon class="st5" points="38.8,27.1 45,5.1 35.1,27.1 "/>
-<g>
-	<polygon class="st6" points="87.2,32.2 67.5,32.2 55.3,5.1 75,5.1 	"/>
-	<polygon class="st6" points="87.2,59.1 67.5,59.1 55.3,86.1 75,86.1 	"/>
-	<polygon class="st7" points="56.9,45.6 37.2,45.6 55.3,5.1 75,5.1 	"/>
-	<polygon class="st8" points="75,86.1 55.3,86.1 37.2,45.6 56.9,45.6 	"/>
-	<polygon class="st9" points="67.5,59.1 75,86.1 65.2,64.1 	"/>
-	<polygon class="st9" points="67.5,32.2 75,5.1 65.2,27.1 	"/>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <circle cx="32" cy="32" r="32" fill="#ffffff"/>
+  <g transform="translate(9 0) skewX(-14)" fill="#163832">
+    <path d="M20 14h28v10H31.500v6H44v10H31.500v12H20z"/>
+  </g>
 </svg>

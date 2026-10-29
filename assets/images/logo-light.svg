@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Fabián Madariaga, fabianmc.dev">
+  <circle cx="256" cy="256" r="256" fill="#ffffff"/>
+  <g transform="translate(256 256) skewX(-14) scale(4.3) translate(-39.5 -32)" fill="#163832"><path d="M0 8h30v11H11v8h13v11H11v18H0z"/><path d="M36 56V8h11l10.500 23L68 8h11v48H68V28l-7 15h-7l-7-15v28z"/></g>
+</svg>
