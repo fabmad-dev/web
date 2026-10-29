@@ -136,7 +136,7 @@ img { display: block; max-width: 100%; }
   --line: rgba(218, 241, 222, .3); --chip: rgba(218, 241, 222, .08); --grid: rgba(142, 182, 155, .09);
   position: relative; z-index: 2;
   padding: clamp(80px, 12vw, 180px) var(--pad);
-  border-radius: 40px 40px 0 0;
+  --r: 40px; border-radius: var(--r) var(--r) 0 0;
   background: var(--bg); color: var(--fg);
 }
 .sheet--chalk {
@@ -322,7 +322,7 @@ img { display: block; max-width: 100%; }
   .about__steps li { height: 30px; }
   .row { grid-template-columns: 1fr; row-gap: 8px; }
   .stack { grid-template-columns: repeat(2, 1fr); }
-  .sheet { border-radius: 28px 28px 0 0; }
+  .sheet { --r: 28px; }
 }
 @media (max-width: 480px) {
   .hero__top { flex-direction: column; align-items: flex-start; }

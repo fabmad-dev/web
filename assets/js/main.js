@@ -129,6 +129,13 @@
     });
   }
 
+  /* Once a sheet reaches the top of the viewport its rounded corners flatten as you keep scrolling */
+  if (!reduce) {
+    $$(".sheet").forEach((s) =>
+      gsap.to(s, { "--r": "0px", ease: "none", scrollTrigger: { trigger: s, start: "top top", end: "+=400", scrub: true } })
+    );
+  }
+
   /* Scrubbed word reveal for the about statement, title words rise in */
   if (!reduce) {
     $$(".title").forEach((t) =>
