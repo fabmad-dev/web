@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>404 | Fabián Madariaga</title>
   <meta name="robots" content="noindex">
   <meta name="theme-color" content="#163832">
@@ -79,7 +79,7 @@
       // language: texts, links, switch state
       document.querySelectorAll("[data-en]").forEach(function (n) { n.textContent = n.dataset[es ? "es" : "en"]; });
       var sw = document.querySelectorAll(".lang a");
-      sw.forEach(function (a) { if (a.dataset.l === (es ? "es" : "en")) { a.removeAttribute("href"); a.setAttribute("aria-current", "true"); a.removeAttribute("hreflang"); } });
+      sw.forEach(function (a) { if (a.dataset.l === (es ? "es" : "en")) { var c = document.createElement("span"); c.textContent = a.textContent; c.setAttribute("aria-current", "true"); a.replaceWith(c); } });
       if (es) { $("#home").href = "/es/"; }
       $("#theme").setAttribute("aria-label", es ? "Cambiar tema" : "Toggle theme");
       $("#path").textContent = location.pathname.length > 1 ? location.pathname : "";

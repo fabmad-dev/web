@@ -4,8 +4,8 @@
   const store = (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} };
   const es = root.lang.startsWith("es");
   const T = es
-    ? { light: "Claro", dark: "Oscuro", toDark: "Cambiar a modo oscuro", toLight: "Cambiar a modo claro", on: "Animaciones: sí", off: "Animaciones: no" }
-    : { light: "Light", dark: "Dark", toDark: "Switch to dark mode", toLight: "Switch to light mode", on: "Animations: on", off: "Animations: off" };
+    ? { light: "Claro", dark: "Oscuro", toDark: "Cambiar a modo oscuro", toLight: "Cambiar a modo claro", on: "Animaciones: sí", menu: "Menú", close: "Cerrar menú", off: "Animaciones: no" }
+    : { light: "Light", dark: "Dark", toDark: "Switch to dark mode", toLight: "Switch to light mode", on: "Animations: on", menu: "Menu", close: "Close menu", off: "Animations: off" };
   const fine = matchMedia("(hover: hover) and (pointer: fine)").matches;
   const $ = (s, c = document) => c.querySelector(s);
   const $$ = (s, c = document) => [...c.querySelectorAll(s)];
@@ -41,6 +41,18 @@
     store("theme", root.dataset.theme);
     syncTheme();
   });
+  /* Mobile menu */
+  const nav = $(".nav"), burger = $("#burger");
+  const setMenu = (open) => {
+    nav.classList.toggle("open", open);
+    burger.setAttribute("aria-expanded", String(open));
+    burger.setAttribute("aria-label", open ? T.close : T.menu);
+  };
+  burger.addEventListener("click", () => setMenu(!nav.classList.contains("open")));
+  $$(".nav__menu a").forEach((a) => a.addEventListener("click", () => setMenu(false)));
+  addEventListener("keydown", (e) => { if (e.key === "Escape") setMenu(false); });
+  addEventListener("pointerdown", (e) => { if (!nav.contains(e.target)) setMenu(false); });
+
   const motionBtn = $("#motion");
   motionBtn.textContent = reduce ? T.off : T.on;
   motionBtn.setAttribute("aria-pressed", String(reduce));
@@ -193,19 +205,24 @@
     paint(0);
   }
 
-  /* Skills: hovering a field keeps its tool cards intact and greys out the rest */
+  /* Skills: hovering a field keeps its tool cards intact and greys out the rest.
+     No hover on touch or small screens: the fields become tabs and show only the chosen field's cards. */
   const marquees = $(".marquees");
+  const compact = matchMedia("(max-width: 820px), (hover: none)");
   const focusCat = (c) => {
     if (c) marquees.dataset.focus = c; else delete marquees.dataset.focus;
     $$(".field").forEach((f) => f.setAttribute("aria-pressed", String(f.dataset.cat === c)));
   };
   $$(".field").forEach((f) => {
-    f.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") focusCat(f.dataset.cat); });
-    f.addEventListener("pointerleave", (e) => { if (e.pointerType === "mouse") focusCat(null); });
-    f.addEventListener("focus", () => focusCat(f.dataset.cat));
-    f.addEventListener("blur", () => focusCat(null));
-    f.addEventListener("click", () => focusCat(marquees.dataset.focus === f.dataset.cat && f.matches(":not(:hover)") ? null : f.dataset.cat));
+    f.addEventListener("pointerenter", (e) => { if (!compact.matches && e.pointerType === "mouse") focusCat(f.dataset.cat); });
+    f.addEventListener("pointerleave", (e) => { if (!compact.matches && e.pointerType === "mouse") focusCat(null); });
+    f.addEventListener("focus", () => { if (!compact.matches) focusCat(f.dataset.cat); });
+    f.addEventListener("blur", () => { if (!compact.matches) focusCat(null); });
+    f.addEventListener("click", () => focusCat(compact.matches ? f.dataset.cat : marquees.dataset.focus === f.dataset.cat && f.matches(":not(:hover)") ? null : f.dataset.cat));
   });
+  const syncSkills = () => focusCat(compact.matches ? "dev" : null);
+  syncSkills();
+  compact.addEventListener("change", syncSkills);
 
   /* Tool marquees: scroll drives them. Down moves row one left and row two right, up reverses. */
   const rows = $$(".marquee").map((m) => {
