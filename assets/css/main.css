@@ -62,6 +62,10 @@ img { display: block; max-width: 100%; }
 .nav.flip { color: var(--nav-flip); }
 .nav__links { display: flex; align-items: center; gap: clamp(14px, 2.2vw, 34px); }
 .nav a { position: relative; padding: 10px 2px; }
+.nav__brand { font-size: 1.25rem; letter-spacing: -0.03em; }
+.nav__brand b { font-weight: 800; }
+.nav__brand i { font-style: normal; font-weight: 800; color: #000; }
+.nav__brand span { font-weight: 400; }
 .theme {
   display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 6px 14px;
   font: inherit; color: inherit; background: none; border: 1px solid currentColor; border-radius: 999px; cursor: pointer;
