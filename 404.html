@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>404 | Fabián Madariaga</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#163832">
+  <meta name="color-scheme" content="dark light">
+  <link rel="icon" href="/assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="/assets/fonts/archivo.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <style>
+    .nf { position: relative; min-height: 100svh; display: flex; flex-direction: column; justify-content: space-between; padding: 92px var(--pad) 28px; overflow: hidden; }
+    .nf__top, .nf__bottom { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
+    .nf__top p { font-size: 1rem; font-weight: 500; line-height: 1.25; }
+    .nf__big { display: flex; align-items: center; justify-content: center; gap: .02em; font-weight: 800; font-stretch: 62%; font-variation-settings: "wdth" 62; font-size: clamp(9rem, 34vw, 34rem); line-height: .8; letter-spacing: -.04em; user-select: none; padding: 4vh 0; }
+    .nf__big > span { display: inline-block; }
+    .nf__zero { position: relative; display: inline-flex !important; align-items: center; justify-content: center; width: .62em; height: .78em; border: .09em solid currentColor; border-radius: 50%; }
+    .nf__eye { position: absolute; width: .2em; height: .2em; border-radius: 50%; background: currentColor; }
+    .nf__msg { max-width: 30ch; font-size: clamp(1.2rem, 2.4vw, 2rem); font-weight: 600; line-height: 1.15; letter-spacing: -.02em; }
+    .nf__msg small { display: block; margin-top: 10px; max-width: 38ch; font-size: 1rem; font-weight: 400; letter-spacing: 0; color: var(--mut); }
+    .nf__links { display: flex; flex-wrap: wrap; gap: 10px; }
+    .nf__links a { display: inline-flex; align-items: center; gap: 10px; padding: 13px 22px; border: 1px solid currentColor; border-radius: 999px; font-weight: 600; transition: background-color .3s, color .3s; }
+    .nf__links a svg { width: 16px; height: 16px; transition: transform .4s cubic-bezier(.2, .8, .2, 1); }
+    .nf__links a:hover, .nf__links a:focus-visible { background: var(--fg); color: var(--deep); outline: none; }
+    [data-theme="light"] .nf__links a:hover, [data-theme="light"] .nf__links a:focus-visible { color: #e6f6ea; }
+    .nf__links a:hover svg, .nf__links a:focus-visible svg { transform: translateX(4px); }
+    .nf__path { color: var(--mut); word-break: break-all; }
+    @media (max-width: 700px) { .nf__top p:last-child { text-align: right; } }
+  </style>
+  <script>
+    (function (d) {
+      var t, m;
+      try { t = localStorage.getItem("theme"); m = localStorage.getItem("motion"); } catch (e) {}
+      if (t !== "light" && t !== "dark") t = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+      d.dataset.theme = t;
+      if (m === "off" || (m !== "on" && matchMedia("(prefers-reduced-motion: reduce)").matches)) d.dataset.motion = "off";
+      if (/^\/es(\/|$)/.test(location.pathname) || (!/^\/es/.test(location.pathname) && (navigator.language || "").toLowerCase().indexOf("es") === 0)) d.lang = "es-CL";
+    })(document.documentElement);
+  </script>
+</head>
+<body>
+  <header class="nav">
+    <a class="nav__brand" href="/" aria-label="fabianmc.dev"><b>fabianmc</b><i>.</i><span>dev</span></a>
+    <nav class="nav__links" aria-label="Main">
+      <span class="lang"><a href="/" hreflang="en" lang="en" data-l="en">EN</a><a href="/es/" hreflang="es-CL" lang="es-CL" data-l="es">ES</a></span>
+      <button class="theme" id="theme" type="button"><span class="theme__icon" aria-hidden="true"></span></button>
+    </nav>
+  </header>
+
+  <main id="main" class="hero nf" style="position:relative;height:auto">
+    <div class="nf__top">
+      <p data-en="Page not found" data-es="Página no encontrada">Page not found</p>
+      <p class="mono hero__clock">Santiago de Chile <time id="clock">--:--</time></p>
+    </div>
+
+    <h1 class="nf__big" aria-label="404">
+      <span aria-hidden="true">4</span><span aria-hidden="true" class="nf__zero" id="zero"><i class="nf__eye" id="eye"></i></span><span aria-hidden="true">4</span>
+    </h1>
+
+    <div class="nf__bottom">
+      <p class="nf__msg" id="msg">
+        <span data-en="This page does not exist, or it moved." data-es="Esta página no existe, o se movió.">This page does not exist, or it moved.</span>
+        <small class="nf__path mono" id="path"></small>
+      </p>
+      <div class="nf__links">
+        <a id="home" href="/"><span data-en="Back to home" data-es="Volver al inicio">Back to home</span><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script>
+    (function () {
+      var root = document.documentElement, es = root.lang.indexOf("es") === 0, $ = function (s) { return document.querySelector(s); };
+      var motion = root.dataset.motion !== "off";
+
+      // language: texts, links, switch state
+      document.querySelectorAll("[data-en]").forEach(function (n) { n.textContent = n.dataset[es ? "es" : "en"]; });
+      var sw = document.querySelectorAll(".lang a");
+      sw.forEach(function (a) { if (a.dataset.l === (es ? "es" : "en")) { a.removeAttribute("href"); a.setAttribute("aria-current", "true"); a.removeAttribute("hreflang"); } });
+      if (es) { $("#home").href = "/es/"; }
+      $("#theme").setAttribute("aria-label", es ? "Cambiar tema" : "Toggle theme");
+      $("#path").textContent = location.pathname.length > 1 ? location.pathname : "";
+
+      // theme
+      var meta = $('meta[name="theme-color"]');
+      function sync() { meta.content = root.dataset.theme === "light" ? "#e4f5e8" : "#163832"; }
+      sync();
+      $("#theme").addEventListener("click", function () {
+        root.dataset.theme = root.dataset.theme === "light" ? "dark" : "light";
+        try { localStorage.setItem("theme", root.dataset.theme); } catch (e) {}
+        sync();
+      });
+
+      // Santiago clock
+      var fmt = new Intl.DateTimeFormat("en-GB", { timeZone: "America/Santiago", hour: "2-digit", minute: "2-digit", hour12: false });
+      function tick() { $("#clock").textContent = fmt.format(new Date()); }
+      tick(); setInterval(tick, 20000);
+
+      // the zero's eye follows the pointer
+      var zero = $("#zero"), eye = $("#eye");
+      var ex = gsap.quickTo(eye, "x", { duration: .5, ease: "power3" }), ey = gsap.quickTo(eye, "y", { duration: .5, ease: "power3" });
+      var maxR = function () { return zero.offsetWidth * .22; };
+      if (motion) addEventListener("pointermove", function (e) {
+        var r = zero.getBoundingClientRect(), dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2);
+        var d = Math.hypot(dx, dy) || 1, k = Math.min(1, d / 300) * maxR();
+        ex(dx / d * k); ey(dy / d * k);
+      });
+
+      // entrance: digits drop in, then the rest
+      if (motion) {
+        gsap.set(".nf__big > span", { yPercent: 40, opacity: 0, rotate: function (i) { return [-8, 0, 8][i]; } });
+        gsap.set(".nf__top, .nf__bottom", { opacity: 0, y: 16 });
+        gsap.timeline({ defaults: { ease: "expo.out" } })
+          .to(".nf__big > span", { yPercent: 0, opacity: 1, rotate: 0, duration: 1.3, stagger: .12 })
+          .to(".nf__top, .nf__bottom", { opacity: 1, y: 0, duration: .9, stagger: .1 }, "-=.7");
+        // the zero looks around while idle
+        var look = gsap.timeline({ repeat: -1, repeatDelay: 1.6, delay: 2 });
+        [[.14, -.06], [-.14, .04], [0, 0]].forEach(function (p) { look.to(eye, { x: function () { return p[0] * zero.offsetWidth; }, y: function () { return p[1] * zero.offsetWidth; }, duration: .8, ease: "power2.inOut" }, "+=.5"); });
+        addEventListener("pointermove", function () { look.kill(); }, { once: true });
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -110,10 +110,10 @@
   /* Sheets stack: each one parks when its bottom reaches the viewport and the next slides over it */
   if (!reduce) {
     const stack = $$(".expertise, .skills, .clients");
-    const park = () => stack.forEach((s) => {
-      s.style.position = "sticky";
-      s.style.top = Math.min(0, innerHeight - s.offsetHeight) + "px";
-    });
+    const park = () => {
+      const tops = stack.map((s) => Math.min(0, innerHeight - s.offsetHeight)); // read all, then write: one reflow
+      stack.forEach((s, i) => { s.style.position = "sticky"; s.style.top = tops[i] + "px"; });
+    };
     park();
     addEventListener("resize", () => { park(); ScrollTrigger.refresh(); });
   }
