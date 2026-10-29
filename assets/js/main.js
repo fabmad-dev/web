@@ -241,6 +241,30 @@
     list.addEventListener("pointerleave", () => gsap.to(float, { opacity: 0, scale: 0.6, rotate: -6, duration: 0.4, overwrite: "auto" }));
   }
 
+  /* Custom cursor: a dot that follows exactly and a ring that trails and grows over anything clickable */
+  if (fine && !reduce) {
+    root.classList.add("has-cursor");
+    const cur = document.createElement("div");
+    cur.className = "cur";
+    cur.setAttribute("aria-hidden", "true");
+    cur.innerHTML = "<i class=\"cur__ring\"></i><i class=\"cur__dot\"></i>";
+    document.body.append(cur);
+    const ring = $(".cur__ring", cur), dot = $(".cur__dot", cur);
+    gsap.set([ring, dot], { xPercent: -50, yPercent: -50 });
+    const rx = gsap.quickTo(ring, "x", { duration: 0.45, ease: "power3" }), ry = gsap.quickTo(ring, "y", { duration: 0.45, ease: "power3" });
+    const dx = gsap.quickTo(dot, "x", { duration: 0.08, ease: "none" }), dy = gsap.quickTo(dot, "y", { duration: 0.08, ease: "none" });
+    addEventListener("pointermove", (e) => {
+      if (e.pointerType !== "mouse") return;
+      cur.classList.add("on");
+      rx(e.clientX); ry(e.clientY); dx(e.clientX); dy(e.clientY);
+      cur.classList.toggle("hot", !!e.target.closest("a, button, .field"));
+      cur.classList.toggle("hide", !!e.target.closest(".client"));
+    });
+    document.addEventListener("mouseleave", () => cur.classList.remove("on"));
+    addEventListener("pointerdown", () => cur.classList.add("down"));
+    addEventListener("pointerup", () => cur.classList.remove("down"));
+  }
+
   /* Magnetic email */
   const mail = $(".mail");
   if (fine && !reduce) {

@@ -144,6 +144,7 @@ img { display: block; max-width: 100%; }
   --fg: var(--ink); --mut: var(--moss); --acc: var(--moss);
   --line: rgba(5, 31, 32, .7); --chip: rgba(5, 31, 32, .06);
 }
+.skills { padding-bottom: calc(clamp(80px, 12vw, 180px) + 100px); }
 .sheet--forest {
   --bg: radial-gradient(45% 35% at 8% 100%, rgba(142, 182, 155, .22), transparent 70%), linear-gradient(180deg, var(--forest), var(--deep));
 }
@@ -334,3 +335,16 @@ html[data-motion="off"] .name { visibility: visible; }
 html[data-motion="off"] .hero__top, html[data-motion="off"] .hero__bottom { opacity: 1; }
 html[data-motion="off"] .row, html[data-motion="off"] .row::before, html[data-motion="off"] .client,
 html[data-motion="off"] .mail span, html[data-motion="off"] .track li, html[data-motion="off"] .field, html[data-motion="off"] .nav { transition: none; }
+
+/* CUSTOM CURSOR (mouse only, hidden for touch and reduced motion) */
+.has-cursor, .has-cursor * { cursor: none; }
+.cur { position: fixed; inset: 0; z-index: 200; pointer-events: none; mix-blend-mode: difference; opacity: 0; transition: opacity .3s; }
+.cur.on { opacity: 1; }
+.cur.on.hide { opacity: 0; }
+.cur i { position: absolute; top: 0; left: 0; display: block; border-radius: 50%; }
+.cur__dot { width: 8px; height: 8px; background: #fff; transition: transform .3s cubic-bezier(.2, .8, .2, 1); }
+.cur__ring { width: 38px; height: 38px; border: 1.5px solid #fff; transition: width .35s cubic-bezier(.2, .8, .2, 1), height .35s cubic-bezier(.2, .8, .2, 1), background-color .3s; }
+.cur.hot .cur__ring { width: 68px; height: 68px; background: rgba(255, 255, 255, .18); }
+.cur.hot .cur__dot { transform: scale(0); }
+.cur.down .cur__ring { width: 28px; height: 28px; }
+@media (hover: none), (pointer: coarse) { .cur { display: none; } }
