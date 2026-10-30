@@ -247,19 +247,24 @@
   /* Clients: logo follows the cursor */
   const float = $(".float"), fimg = $("img", float);
   if (fine && !reduce) {
-    gsap.set(float, { xPercent: -50, yPercent: -50, scale: 0.6, rotate: -6 });
+    gsap.set(float, { xPercent: -50, yPercent: -50, scale: 0.5 });
     const xTo = gsap.quickTo(float, "x", { duration: 0.55, ease: "power3" });
     const yTo = gsap.quickTo(float, "y", { duration: 0.55, ease: "power3" });
+    const show = (t) => gsap.to(float, { opacity: t, scale: 0.5 + 0.5 * t, duration: 0.3, overwrite: "auto" });
     const list = $(".client-list");
-    list.addEventListener("pointermove", (e) => { xTo(e.clientX + 40); yTo(e.clientY); });
-    $$(".client").forEach((c) => {
-      c.addEventListener("pointerenter", () => {
-        if (!c.dataset.img) { gsap.to(float, { opacity: 0, duration: 0.2, overwrite: "auto" }); return; }
-        fimg.src = c.dataset.img;
-        gsap.to(float, { opacity: 1, scale: 1, rotate: 0, duration: 0.5, ease: "expo.out", overwrite: "auto" });
-      });
+    let cur;
+    // Cursor height inside the row drives the logo: it grows in from the row's edge, is full at the middle and shrinks out toward the opposite edge
+    list.addEventListener("pointermove", (e) => {
+      xTo(e.clientX + 40); yTo(e.clientY);
+      const c = e.target.closest(".client");
+      if (!c) return;
+      if (c !== cur) { cur = c; if (c.dataset.img) fimg.src = c.dataset.img; }
+      const r = c.getBoundingClientRect();
+      const k = Math.min(1, Math.min(e.clientY - r.top, r.bottom - e.clientY) / (r.height * 0.35));
+      const t = c.dataset.img ? k * k * (3 - 2 * k) : 0;
+      show(t);
     });
-    list.addEventListener("pointerleave", () => gsap.to(float, { opacity: 0, scale: 0.6, rotate: -6, duration: 0.4, overwrite: "auto" }));
+    list.addEventListener("pointerleave", () => { cur = null; show(0); });
   }
 
   /* Custom cursor: a dot that follows exactly and a ring that trails and grows over anything clickable */
