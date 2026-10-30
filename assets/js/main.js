@@ -12,12 +12,6 @@
 
   gsap.registerPlugin(ScrollTrigger);
 
-  /* Santiago clock */
-  const clock = $("#clock");
-  const fmt = new Intl.DateTimeFormat("en-GB", { timeZone: "America/Santiago", hour: "2-digit", minute: "2-digit", hour12: false });
-  const tick = () => (clock.textContent = fmt.format(new Date()));
-  tick(); setInterval(tick, 10000);
-
   /* Split helpers */
   $$("[data-chars]").forEach((el) => {
     el.innerHTML = [...el.textContent].map((c) => `<span class="ch">${c}</span>`).join("");
