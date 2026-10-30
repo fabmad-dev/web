@@ -215,48 +215,24 @@
     paint(0);
   }
 
-  /* Skills: hovering a field keeps its tool cards intact and greys out the rest.
-     No hover on touch or small screens: the fields become tabs and show only the chosen field's cards. */
-  const marquees = $(".marquees");
+  /* Skills: hovering a field lights up its tools in the mixed cloud. No hover on touch or small screens: the fields become tabs. */
+  const cloud = $(".cloud");
   const compact = matchMedia("(max-width: 820px), (hover: none)");
   const focusCat = (c) => {
-    if (c) marquees.dataset.focus = c; else delete marquees.dataset.focus;
+    if (c) cloud.dataset.focus = c; else delete cloud.dataset.focus;
     $$(".field").forEach((f) => f.setAttribute("aria-pressed", String(f.dataset.cat === c)));
   };
   $$(".field").forEach((f) => {
+    $$(`.cloud li[data-cat="${f.dataset.cat}"]`).forEach((li, i) => li.style.setProperty("--i", i));
     f.addEventListener("pointerenter", (e) => { if (!compact.matches && e.pointerType === "mouse") focusCat(f.dataset.cat); });
     f.addEventListener("pointerleave", (e) => { if (!compact.matches && e.pointerType === "mouse") focusCat(null); });
     f.addEventListener("focus", () => { if (!compact.matches) focusCat(f.dataset.cat); });
     f.addEventListener("blur", () => { if (!compact.matches) focusCat(null); });
-    f.addEventListener("click", () => focusCat(compact.matches ? f.dataset.cat : marquees.dataset.focus === f.dataset.cat && f.matches(":not(:hover)") ? null : f.dataset.cat));
+    f.addEventListener("click", () => { if (compact.matches) focusCat(f.dataset.cat); });
   });
   const syncSkills = () => focusCat(compact.matches ? "dev" : null);
   syncSkills();
   compact.addEventListener("change", syncSkills);
-
-  /* Tool marquees: scroll drives them. Down moves row one left and row two right, up reverses. */
-  const rows = $$(".marquee").map((m) => {
-    const track = $(".track", m);
-    const n = $$("li", track).length;
-    track.append(...$$("li", track).map((li) => li.cloneNode(true)));
-    $$("li", track).slice(n).forEach((li) => li.setAttribute("aria-hidden", "true"));
-    return { track, dir: +m.dataset.dir, x: 0, target: 0 };
-  });
-  if (!reduce) {
-    let last = scrollY;
-    gsap.ticker.add(() => {
-      const d = scrollY - last;
-      last = scrollY;
-      rows.forEach((r) => {
-        r.target -= d * r.dir * 0.9;
-        r.x += (r.target - r.x) * 0.12;
-        const half = r.track.scrollWidth / 2;
-        const shift = gsap.utils.wrap(-half, 0, r.x) - r.x;
-        r.x += shift; r.target += shift;
-        gsap.set(r.track, { x: r.x });
-      });
-    });
-  }
 
   /* Clients: logo follows the cursor */
   const float = $(".float"), fimg = $("img", float);
