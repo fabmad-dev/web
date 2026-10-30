@@ -121,7 +121,9 @@
       stack.forEach((s, i) => { s.style.position = "sticky"; s.style.top = tops[i] + "px"; });
     };
     park();
-    addEventListener("resize", () => { park(); ScrollTrigger.refresh(); });
+    let w = innerWidth;
+    // iOS Safari fires resize when the address bar shows/hides; re-parking then makes the sheets jump
+    addEventListener("resize", () => { if (innerWidth === w) return; w = innerWidth; park(); ScrollTrigger.refresh(); });
   }
 
   /* Nav turns dark over the light section */
