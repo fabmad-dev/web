@@ -141,6 +141,20 @@
     });
   }
 
+  /* Parked sheets recede like the hero while the next one slides over them (Clients stays untransformed: its pinned title bar needs a fixed background) */
+  if (!reduce) {
+    [".expertise", ".skills", ".clients"].forEach((sel) => {
+      const sheet = $(sel), next = sheet.nextElementSibling;
+      const inner = document.createElement("div");
+      inner.className = "sheet__in";
+      inner.append(...sheet.childNodes);
+      sheet.append(inner);
+      const fx = sel === ".clients" ? {} : { scale: 0.92, yPercent: -6, transformOrigin: "50% 100%" };
+      gsap.to(inner, { ...fx, ease: "none", scrollTrigger: { trigger: next, start: "top bottom", end: "top top", scrub: true } });
+      gsap.to(inner, { opacity: 0, ease: "none", scrollTrigger: { trigger: next, start: "top bottom", end: "top 300px", scrub: true } });
+    });
+  }
+
   /* Once a sheet reaches the top of the viewport its rounded corners flatten as you keep scrolling */
   if (!reduce) {
     $$(".sheet").forEach((s) =>

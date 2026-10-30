@@ -453,3 +453,16 @@ html[data-motion="off"] .track li { animation: none; }
   mask-image: radial-gradient(70% 80% at 88% 85%, #000, transparent 80%);
 }
 [data-theme="light"] .contact::before { --dot: rgba(35, 83, 71, .4); }
+
+/* CLIENTS: the title row stays pinned at the top while the list scrolls under it */
+.clients, .clients .title { background-attachment: fixed; } /* same viewport-fixed gradient on both, so the title bar is invisible against the section */
+.clients .title {
+  --tp: clamp(16px, 2vw, 28px); --cpt: clamp(80px, 12vw, 180px); /* --cpt = the sheet's top padding; the bar pins with the title 92px from the top, just under the nav */
+  position: sticky; top: calc(92px - var(--cpt)); z-index: 3; border-radius: var(--r) var(--r) 0 0;
+  background-image: var(--bg); background-color: transparent;
+  margin: calc(var(--cpt) * -1) calc(var(--pad) * -1) calc(clamp(40px, 6vw, 90px) - var(--tp)); padding: var(--cpt) var(--pad) var(--tp); /* the bar starts at the sheet's edge, so it pins when the edge reaches the top */
+}
+@media (hover: none) { /* iOS ignores fixed backgrounds: flat colour so the bar still blends in */
+  .clients, .clients .title { background: var(--forest); }
+  [data-theme="light"] .clients, [data-theme="light"] .clients .title { background: #b3d5be; }
+}
