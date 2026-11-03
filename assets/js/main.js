@@ -136,8 +136,8 @@
       scrollTrigger: { trigger: ".about", start: "top bottom", end: "top top", scrub: true },
     });
     gsap.to(".hero__inner", {
-      opacity: 0, ease: "none",
-      scrollTrigger: { trigger: ".about", start: "top bottom", end: "top 300px", scrub: true },
+      opacity: 0.3, filter: "blur(24px)", ease: "none", // softer fade, going out of focus as About covers it
+      scrollTrigger: { trigger: ".about", start: "top bottom", end: "top top", scrub: true },
     });
   }
 

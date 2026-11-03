@@ -207,11 +207,11 @@ img { display: block; max-width: 100%; }
 }
 .about__years {
   position: absolute; top: 92px; left: var(--pad);
-  display: flex; align-items: flex-end; gap: 6px; opacity: 0;
+  display: flex; align-items: last baseline; gap: 6px; opacity: 0;
 }
 .about__years b { font-size: clamp(3.4rem, 8vw, 8rem); line-height: .8; letter-spacing: -.05em; font-weight: 900; font-variation-settings: "wdth" 100; min-width: .62em; }
 .about__years sup { font-size: clamp(1.6rem, 3.4vw, 3.4rem); line-height: .8; font-weight: 800; color: var(--mut); }
-.about__years span { margin-left: 10px; font-size: .95rem; line-height: 1.2; color: var(--mut); padding-bottom: 4px; }
+.about__years span { margin-left: 10px; font-size: .95rem; line-height: 1.2; color: var(--mut); }
 .about__word {
   position: absolute; left: var(--pad); right: var(--pad); top: 50%; transform: translateY(-54%);
   font-size: clamp(2.8rem, 13.4vw, 15rem); line-height: .85; letter-spacing: -.035em;
